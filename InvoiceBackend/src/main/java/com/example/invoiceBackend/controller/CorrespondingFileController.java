@@ -8,33 +8,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.invoiceBackend.service.InvoiceService;
+import com.example.invoiceBackend.service.CorrespondingFileService;
 
 @RestController
-@RequestMapping("/api/invoice")
+@RequestMapping("/api/corresponding-file")
 @CrossOrigin(origins = "http://localhost:5173")
-public class InvoiceController {
+public class CorrespondingFileController {
 
-    private final InvoiceService invoiceService;
+    private final CorrespondingFileService service;
 
-    public InvoiceController(
-            InvoiceService invoiceService) {
+    public CorrespondingFileController(
+            CorrespondingFileService service) {
 
-        this.invoiceService = invoiceService;
+        this.service = service;
     }
 
     @PostMapping("/upload")
-public ResponseEntity<String> uploadInvoice(
-        @RequestParam String invoiceNo,
-        @RequestParam String username,
-        @RequestParam MultipartFile file) {
+    public ResponseEntity<String> upload(
+
+            @RequestParam String invoiceNo,
+
+            @RequestParam String username,
+
+            @RequestParam String fileType,
+
+            @RequestParam MultipartFile file) {
 
         try {
 
             String result =
-                    invoiceService.uploadInvoice(
+                    service.uploadFile(
                             invoiceNo,
                             username,
+                            fileType,
                             file);
 
             return ResponseEntity.ok(result);

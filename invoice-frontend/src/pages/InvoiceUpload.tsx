@@ -16,12 +16,22 @@ function InvoiceUpload() {
             return;
         }
 
+        const username =
+            localStorage.getItem(
+                "username"
+            );
+
         const formData =
             new FormData();
 
         formData.append(
             "invoiceNo",
             invoiceNo
+        );
+
+        formData.append(
+            "username",
+            username || ""
         );
 
         formData.append(
