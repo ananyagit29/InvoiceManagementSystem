@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
-
-import InvoiceUpload from "./InvoiceUpload";
-import CorrespondingFileUpload from "./CorrespondingFileUpload";
+import { useNavigate }
+from "react-router-dom";
 
 function Dashboard() {
 
-    const navigate = useNavigate();
+    const navigate =
+        useNavigate();
 
     const logout = () => {
 
@@ -15,21 +14,40 @@ function Dashboard() {
     };
 
     return (
+
         <div>
 
             <h1>
-                Invoice Management Dashboard
+                Invoice Document Management System
             </h1>
 
-            <InvoiceUpload />
+            <button
+                onClick={() =>
+                    navigate(
+                        "/search"
+                    )
+                }
+            >
+                Search
+            </button>
 
-            <hr />
+            {" "}
 
-            <CorrespondingFileUpload />
+            <button
+                onClick={() =>
+                    navigate(
+                        "/create"
+                    )
+                }
+            >
+                Create
+            </button>
 
-            <hr />
+            {" "}
 
-            <button onClick={logout}>
+            <button
+                onClick={logout}
+            >
                 Logout
             </button>
 

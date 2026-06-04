@@ -11,45 +11,58 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.invoiceBackend.service.CorrespondingFileService;
 
 @RestController
-@RequestMapping("/api/corresponding-file")
-@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping(
+        "/api/corresponding-file")
+@CrossOrigin(
+        origins =
+                "http://localhost:5173")
 public class CorrespondingFileController {
 
-    private final CorrespondingFileService service;
+    private final
+    CorrespondingFileService
+            service;
 
     public CorrespondingFileController(
             CorrespondingFileService service) {
 
-        this.service = service;
+        this.service =
+                service;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(
+    public ResponseEntity<String>
+    uploadFile(
 
-            @RequestParam String invoiceNo,
+            @RequestParam
+            String invoiceNo,
 
-            @RequestParam String username,
+            @RequestParam
+            String fileType,
 
-            @RequestParam String fileType,
+            @RequestParam
+            String username,
 
-            @RequestParam MultipartFile file) {
+            @RequestParam
+            MultipartFile file) {
 
         try {
 
             String result =
                     service.uploadFile(
                             invoiceNo,
-                            username,
                             fileType,
+                            username,
                             file);
 
-            return ResponseEntity.ok(result);
+            return ResponseEntity
+                    .ok(result);
 
         } catch (Exception e) {
 
             return ResponseEntity
                     .badRequest()
-                    .body(e.getMessage());
+                    .body(
+                            e.getMessage());
         }
     }
 }

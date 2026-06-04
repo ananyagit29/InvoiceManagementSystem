@@ -1,91 +1,118 @@
 package com.example.invoiceBackend.service;
 
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.invoiceBackend.entity.CorrespondingFile;
-import com.example.invoiceBackend.entity.Invoice;
 import com.example.invoiceBackend.repository.CorrespondingFileRepository;
-import com.example.invoiceBackend.repository.InvoiceRepository;
 
 @Service
 public class CorrespondingFileService {
 
-    private final InvoiceRepository invoiceRepository;
+    private final CorrespondingFileRepository repository;
 
-    private final CorrespondingFileRepository correspondingFileRepository;
-
-    private final String SUPPORTING_DIR =
+    private static final String
+            SUPPORTING_STORAGE =
             "E:/SupportingDocuments/";
 
+    private static final String
+            INVOICE_STORAGE =
+            "D:/InvoiceStorage/";
+
     public CorrespondingFileService(
-            InvoiceRepository invoiceRepository,
-            CorrespondingFileRepository correspondingFileRepository) {
+            CorrespondingFileRepository repository) {
 
-        this.invoiceRepository =
-                invoiceRepository;
-
-        this.correspondingFileRepository =
-                correspondingFileRepository;
+        this.repository =
+                repository;
     }
 
     public String uploadFile(
             String invoiceNo,
-            String username,
             String fileType,
+            String username,
             MultipartFile file)
-            throws IOException {
+            throws Exception {
 
-        Invoice invoice =
-                invoiceRepository
-                        .findByInvoiceNo(invoiceNo)
-                        .orElse(null);
+        boolean invoiceExists =
+                false;
 
-        if (invoice == null) {
+        File invoiceFolder =
+                new File(
+                        INVOICE_STORAGE);
+
+        File[] files =
+                invoiceFolder.listFiles();
+
+        if (files != null) {
+
+            for (File invoice :
+                    files) {
+
+                if (invoice.getName()
+                        .contains(
+                                invoiceNo)) {
+
+                    invoiceExists =
+                            true;
+
+                    break;
+                }
+            }
+        }
+
+        if (!invoiceExists) {
 
             return "Invoice Not Found";
         }
 
-        if (!invoice.getUsername()
-                .equals(username)) {
-
-            return "Access Denied";
-        }
-
-        Path invoiceFolder =
+        Path targetFolder =
                 Paths.get(
-                        SUPPORTING_DIR +
-                                invoiceNo);
+                        SUPPORTING_STORAGE
+                                + invoiceNo);
 
         Files.createDirectories(
-                invoiceFolder);
+                targetFolder);
 
         String fileName =
                 file.getOriginalFilename();
 
-        Path filePath =
-                invoiceFolder.resolve(
+        Path destination =
+                targetFolder.resolve(
                         fileName);
 
         Files.write(
-                filePath,
+                destination,
                 file.getBytes());
 
         CorrespondingFile doc =
-                new CorrespondingFile(
-                        invoiceNo,
-                        fileType,
-                        fileName,
-                        username);
+                new CorrespondingFile();
 
-        correspondingFileRepository
-                .save(doc);
+        doc.setInvoiceNo(
+                invoiceNo);
 
-        return "Supporting File Uploaded";
+        doc.setFileType(
+                fileType);
+
+        doc.setFileName(
+                fileName);
+
+        doc.setUsername(
+                username);
+
+        doc.setCreatedOn(
+                LocalDateTime
+                        .now()
+                        .toString());
+
+        repository.save(
+                doc);
+
+        return "File Uploaded Successfully";
     }
 }

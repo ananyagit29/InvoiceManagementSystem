@@ -1,54 +1,88 @@
 package com.example.invoiceBackend.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.text.SimpleDateFormat;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.example.invoiceBackend.entity.Invoice;
+import com.example.invoiceBackend.dto.InvoiceSearchResponse;
 import com.example.invoiceBackend.repository.InvoiceRepository;
 
 @Service
 public class InvoiceService {
-private final InvoiceRepository invoiceRepository;
-private final String UPLOAD_DIR ="D:/InvoiceStorage/";
 
-public InvoiceService(InvoiceRepository invoiceRepository) {
-        this.invoiceRepository = invoiceRepository;
-}
+    private final InvoiceRepository invoiceRepository;
 
-public String uploadInvoice(String invoiceNo, String username, MultipartFile file)
-throws IOException {
-        if (invoiceRepository.findByInvoiceNo(invoiceNo).isPresent()) {
-                return "Invoice Already Exists";
-}
+    private static final String INVOICE_STORAGE =
+            "D:/InvoiceStorage/";
 
-        Files.createDirectories(
-                Paths.get(UPLOAD_DIR));
+    public InvoiceService(
+            InvoiceRepository invoiceRepository) {
 
-        String fileName =
-                invoiceNo + "_" +
-                        file.getOriginalFilename();
+        this.invoiceRepository =
+                invoiceRepository;
+    }
 
-        Path path =
-                Paths.get(
-                        UPLOAD_DIR + fileName);
+    public InvoiceSearchResponse searchInvoice(
+            String invoiceNo) {
 
-        Files.write(
-                path,
-                file.getBytes());
+        InvoiceSearchResponse response =
+                new InvoiceSearchResponse();
 
-        Invoice invoice =
-                new Invoice(
-                        invoiceNo,
-                        fileName,
-                        username);
+        File storageFolder =
+                new File(INVOICE_STORAGE);
 
-        invoiceRepository.save(invoice);
+        if (!storageFolder.exists()) {
 
-        return "Invoice Uploaded Successfully";
-}
+            response.setFound(false);
+
+            return response;
+        }
+
+        File[] files =
+                storageFolder.listFiles();
+
+        if (files == null) {
+
+            response.setFound(false);
+
+            return response;
+        }
+
+        for (File file : files) {
+
+            String fileName =
+                    file.getName();
+
+            if (fileName
+                    .toLowerCase()
+                    .contains(
+                            invoiceNo
+                                    .toLowerCase())) {
+
+                response.setFound(true);
+
+                response.setInvoiceNo(
+                        invoiceNo);
+
+                response.setInvoiceFile(
+                        fileName);
+
+                response.setCreatedBy(
+                        "Admin");
+
+                response.setCreatedOn(
+                        new SimpleDateFormat(
+                                "dd-MM-yyyy HH:mm:ss")
+                                .format(
+                                        file.lastModified()));
+
+                return response;
+            }
+        }
+
+        response.setFound(false);
+
+        return response;
+    }
 }

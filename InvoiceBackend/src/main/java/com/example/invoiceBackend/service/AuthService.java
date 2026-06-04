@@ -2,6 +2,7 @@ package com.example.invoiceBackend.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.invoiceBackend.entity.User;
 import com.example.invoiceBackend.repository.UserRepository;
 
 @Service
@@ -16,15 +17,34 @@ public class AuthService {
                 userRepository;
     }
 
-    public boolean login(
+    public String login(
             String username,
             String password) {
 
-        return userRepository
-                .findByUsername(username)
-                .map(user ->
-                        user.getPassword()
-                                .equals(password))
-                .orElse(false);
+        User user =
+                userRepository
+                        .findByUsername(
+                                username)
+                        .orElse(null);
+
+        if (user == null) {
+
+            return "Invalid User";
+        }
+
+        if (!user
+                .getPassword()
+                .equals(password)) {
+
+            return "Invalid Password";
+        }
+
+        if (!"ACTIVE".equalsIgnoreCase(
+                user.getAccountStatus())) {
+
+            return "User Inactive";
+        }
+
+        return "Login Success";
     }
 }

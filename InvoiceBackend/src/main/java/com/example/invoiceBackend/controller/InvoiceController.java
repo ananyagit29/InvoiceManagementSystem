@@ -2,12 +2,12 @@ package com.example.invoiceBackend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;      // NEW
+import org.springframework.web.bind.annotation.PathVariable; // NEW
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.example.invoiceBackend.dto.InvoiceSearchResponse;
 import com.example.invoiceBackend.service.InvoiceService;
 
 @RestController
@@ -23,27 +23,20 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    @PostMapping("/upload")
-public ResponseEntity<String> uploadInvoice(
-        @RequestParam String invoiceNo,
-        @RequestParam String username,
-        @RequestParam MultipartFile file) {
+    // ==========================
+    // SEARCH INVOICE API
+    // ==========================
 
-        try {
+    @GetMapping("/search/{invoiceNo}")
+    public ResponseEntity<InvoiceSearchResponse>
+    searchInvoice(
+            @PathVariable String invoiceNo) {
 
-            String result =
-                    invoiceService.uploadInvoice(
-                            invoiceNo,
-                            username,
-                            file);
+        InvoiceSearchResponse response =
+                invoiceService.searchInvoice(
+                        invoiceNo);
 
-            return ResponseEntity.ok(result);
-
-        } catch (Exception e) {
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return ResponseEntity.ok(
+                response);
     }
 }

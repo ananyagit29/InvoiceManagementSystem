@@ -1,7 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route
+} from "react-router-dom";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Login
+from "./pages/Login";
+
+import Dashboard
+from "./pages/Dashboard";
+
+import SearchInvoice
+from "./pages/SearchInvoice";
+
+import CreateSupportingFile
+from "./pages/CreateSupportingFile";
 
 function App() {
 
@@ -13,12 +26,30 @@ function App() {
 
                 <Route
                     path="/"
-                    element={<Login />}
+                    element={
+                        <Login />
+                    }
                 />
 
                 <Route
                     path="/dashboard"
-                    element={<Dashboard />}
+                    element={
+                        <Dashboard />
+                    }
+                />
+
+                <Route
+                    path="/search"
+                    element={
+                        <SearchInvoice />
+                    }
+                />
+
+                <Route
+                    path="/create"
+                    element={
+                        <CreateSupportingFile />
+                    }
                 />
 
             </Routes>

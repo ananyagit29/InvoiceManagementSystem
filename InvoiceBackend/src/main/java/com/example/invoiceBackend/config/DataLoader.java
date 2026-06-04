@@ -10,7 +10,8 @@ import com.example.invoiceBackend.repository.UserRepository;
 public class DataLoader
         implements CommandLineRunner {
 
-    private final UserRepository userRepository;
+    private final UserRepository
+            userRepository;
 
     public DataLoader(
             UserRepository userRepository) {
@@ -20,23 +21,23 @@ public class DataLoader
     }
 
     @Override
-    public void run(String... args)
-            throws Exception {
+    public void run(
+            String... args) {
 
-        if(userRepository.count() == 0) {
+        if (userRepository.count()
+                == 0) {
 
             userRepository.save(
                     new User(
-                            "admin",
-                            "admin123"
-                    )
-            );
+                            "user1",
+                            "password123",
+                            "ACTIVE"));
+
             userRepository.save(
                     new User(
-                            "user",
-                            "user123"
-                    )
-            );
+                            "user2",
+                            "password123",
+                            "ACTIVE"));
         }
     }
 }

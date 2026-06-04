@@ -1,6 +1,11 @@
 package com.example.invoiceBackend.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -15,17 +20,27 @@ public class User {
 
     private String password;
 
+    private String accountStatus;
+
     public User() {
     }
 
-    public User(String username,
-                String password) {
+    public User(
+            String username,
+            String password,
+            String accountStatus) {
+
         this.username = username;
         this.password = password;
+        this.accountStatus = accountStatus;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -44,5 +59,14 @@ public class User {
     public void setPassword(
             String password) {
         this.password = password;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(
+            String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }
