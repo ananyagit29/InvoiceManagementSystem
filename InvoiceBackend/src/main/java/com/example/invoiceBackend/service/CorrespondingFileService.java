@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.invoiceBackend.entity.CorrespondingFile;
-import com.example.invoiceBackend.repository.CorrespondingFileRepository;
+import com.example.invoiceBackend.secondary.entity.CorrespondingFile;
+import com.example.invoiceBackend.secondary.repository.CorrespondingFileRepository;
 
 @Service
 public class CorrespondingFileService {

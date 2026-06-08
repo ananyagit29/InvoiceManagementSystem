@@ -134,11 +134,10 @@ function CreateSupportingFile() {
                 type="text"
                 placeholder="Invoice Number"
                 value={invoiceNo}
-                onChange={(e) =>
-                    setInvoiceNo(
-                        e.target.value
-                    )
-                }
+                onChange={(e) => {
+                    setInvoiceNo(e.target.value);
+                    setInvoiceFound(false);
+                }}
             />
 
             <br />

@@ -3,8 +3,8 @@ package com.example.invoiceBackend.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.example.invoiceBackend.entity.User;
-import com.example.invoiceBackend.repository.UserRepository;
+import com.example.invoiceBackend.primary.entity.User;
+import com.example.invoiceBackend.primary.repository.UserRepository;
 
 @Component
 public class DataLoader

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Service;
 
 import com.example.invoiceBackend.dto.InvoiceSearchResponse;
-import com.example.invoiceBackend.repository.InvoiceRepository;
+import com.example.invoiceBackend.primary.repository.InvoiceRepository;
 
 @Service
 public class InvoiceService {
@@ -75,7 +75,7 @@ public class InvoiceService {
                         new SimpleDateFormat(
                                 "dd-MM-yyyy HH:mm:ss")
                                 .format(
-                                        file.lastModified()));
+                                        new java.util.Date(file.lastModified())));
 
                 return response;
             }

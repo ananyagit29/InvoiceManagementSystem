@@ -1,11 +1,11 @@
-package com.example.invoiceBackend.entity;
+package com.example.invoiceBackend.primary.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "users")
@@ -15,9 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     private String accountStatus;
@@ -25,11 +26,7 @@ public class User {
     public User() {
     }
 
-    public User(
-            String username,
-            String password,
-            String accountStatus) {
-
+    public User(String username, String password, String accountStatus) {
         this.username = username;
         this.password = password;
         this.accountStatus = accountStatus;
@@ -47,8 +44,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(
-            String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -56,8 +52,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(
-            String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -65,8 +60,7 @@ public class User {
         return accountStatus;
     }
 
-    public void setAccountStatus(
-            String accountStatus) {
+    public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
     }
 }

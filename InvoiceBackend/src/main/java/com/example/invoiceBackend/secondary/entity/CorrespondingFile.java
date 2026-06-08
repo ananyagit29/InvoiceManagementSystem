@@ -1,20 +1,22 @@
-package com.example.invoiceBackend.entity;
+package com.example.invoiceBackend.secondary.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
 
 @Entity
 @Table(name = "corresponding_files")
 public class CorrespondingFile {
 
     @Id
-    @GeneratedValue(strategy =
-            GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String invoiceNo;
 
     private String fileType;
@@ -25,6 +27,10 @@ public class CorrespondingFile {
 
     private String createdOn;
 
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] fileContent;
+
     public CorrespondingFile() {
     }
 
@@ -32,8 +38,7 @@ public class CorrespondingFile {
         return id;
     }
 
-    public void setId(
-            Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,8 +46,7 @@ public class CorrespondingFile {
         return invoiceNo;
     }
 
-    public void setInvoiceNo(
-            String invoiceNo) {
+    public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
     }
 
@@ -50,8 +54,7 @@ public class CorrespondingFile {
         return fileType;
     }
 
-    public void setFileType(
-            String fileType) {
+    public void setFileType(String fileType) {
         this.fileType = fileType;
     }
 
@@ -59,8 +62,7 @@ public class CorrespondingFile {
         return fileName;
     }
 
-    public void setFileName(
-            String fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
@@ -68,8 +70,7 @@ public class CorrespondingFile {
         return username;
     }
 
-    public void setUsername(
-            String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -77,8 +78,15 @@ public class CorrespondingFile {
         return createdOn;
     }
 
-    public void setCreatedOn(
-            String createdOn) {
+    public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public byte[] getFileContent() {
+        return fileContent;
+    }
+
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
     }
 }

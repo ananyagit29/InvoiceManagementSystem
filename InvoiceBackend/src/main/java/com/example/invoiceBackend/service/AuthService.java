@@ -2,8 +2,8 @@ package com.example.invoiceBackend.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.invoiceBackend.entity.User;
-import com.example.invoiceBackend.repository.UserRepository;
+import com.example.invoiceBackend.primary.entity.User;
+import com.example.invoiceBackend.primary.repository.UserRepository;
 
 @Service
 public class AuthService {
