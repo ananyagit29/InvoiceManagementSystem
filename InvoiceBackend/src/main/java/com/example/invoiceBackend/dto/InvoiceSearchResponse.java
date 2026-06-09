@@ -6,6 +6,8 @@ public class InvoiceSearchResponse {
 
     private String invoiceFile;
 
+    private String otherFile;
+
     private String createdBy;
 
     private String createdOn;
@@ -28,6 +30,15 @@ public class InvoiceSearchResponse {
     public void setInvoiceFile(
             String invoiceFile) {
         this.invoiceFile = invoiceFile;
+    }
+
+    public String getOtherFile() {
+        return otherFile;
+    }
+
+    public void setOtherFile(
+            String otherFile) {
+        this.otherFile = otherFile;
     }
 
     public String getCreatedBy() {

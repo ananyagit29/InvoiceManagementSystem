@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -114,5 +117,70 @@ public class CorrespondingFileService {
                 doc);
 
         return "File Uploaded Successfully";
+    }
+
+    public Resource getSupportingFile(
+            String invoiceNo)
+            throws Exception {
+
+        Path filePath =
+                getSupportingFilePath(
+                        invoiceNo);
+
+        return new UrlResource(
+                filePath
+                        .toUri());
+    }
+
+    public String getSupportingFileName(
+            String invoiceNo)
+            throws Exception {
+
+        return getSupportingFilePath(
+                invoiceNo)
+                .getFileName()
+                .toString();
+    }
+
+    private Path getSupportingFilePath(
+            String invoiceNo)
+            throws Exception {
+
+        List<CorrespondingFile> files =
+                repository.findByInvoiceNo(
+                        invoiceNo);
+
+        if (files.isEmpty()) {
+
+            throw new Exception(
+                    "Supporting file not found");
+        }
+
+        String fileName =
+                files.get(0)
+                        .getFileName();
+
+        Path invoiceFolder =
+                Paths.get(
+                        SUPPORTING_STORAGE,
+                        invoiceNo)
+                        .normalize();
+
+        Path filePath =
+                invoiceFolder
+                        .resolve(
+                                fileName)
+                        .normalize();
+
+        if (!filePath.startsWith(
+                invoiceFolder) ||
+                !Files.exists(
+                        filePath)) {
+
+            throw new Exception(
+                    "Supporting file not found");
+        }
+
+        return filePath;
     }
 }
