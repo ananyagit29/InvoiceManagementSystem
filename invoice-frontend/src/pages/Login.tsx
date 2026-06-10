@@ -21,12 +21,14 @@ function Login() {
                 }
             );
 
-            alert(response.data);
-
-            navigate("/dashboard");
+            if (response.data === "Login Success") {
+                alert(response.data);
+                navigate("/dashboard");
+            } else {
+                alert(response.data);
+            }
 
         } catch (error) {
-
             alert("Invalid User");
         }
     };
